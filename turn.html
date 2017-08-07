@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.box{
+				width: 1200px;
+				height: 600px;
+				margin: 50px auto;
+				border: 1px solid red;
+				position: relative;
+			}
+			.box .inner{
+				position: relative;
+				z-index: 1;
+			}
+			.box .inner li{
+				position: absolute;
+			}
+			.box .inner img{
+				width: 100%;
+			}
+			.lead{
+				width: 100%;
+				height: 112px;
+				position: absolute;
+				left: 0;
+				top: 50%;
+				margin-top: -56px;
+				z-index: 2;
+			}
+			.lead li{
+				width: 76px;
+				height: 112px;
+				display: inline-block;
+			}
+			.next{
+				margin-left: 1042px;
+			}
+			.btn{
+				width: 100%;
+				position: absolute;
+				text-align: center;
+				bottom: 20px;
+				z-index: 3;
+			}
+			.btn li{
+				display: inline-block;
+				width: 25px;
+				height: 25px;
+				border-radius: 50px;
+				background: blue;
+			}
+			.btn li.cur{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul class="inner">
+				<li><img src="img/slidepic7.jpg"/></li>
+				<li><img src="img/slidepic8.jpg"/></li>
+				<li><img src="img/slidepic9.jpg"/></li>
+			</ul>		
+			<ul class="lead">
+				<li class="prev"><img src="img/prev.png"/></li>
+				<li class="next"><img src="img/next.png"/></li>
+			</ul>
+			<ul class="btn">
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="my.js"></script>
+<script type="text/javascript">
+	var aLi=document.querySelectorAll(".inner li");
+	var lead=document.querySelector(".lead");
+	var aBtn=lead.children;
+	var btn=document.querySelector(".btn");
+	var json=[
+        {width:600,height:375,opacity:0.7,top:70,left:0,z:2},
+        {width:800,height:500,opacity:1,top:100,left:200,z:3}, //第一张
+        {width:600,height:375,opacity:0.7,top:70,left:600,z:2},
+	]
+var key=0;
+	cheg();
+	cur();
+	//下一张
+	for(var i=0; i<aBtn.length; i++){
+        aBtn[i].onclick=function () {
+            if (this.className == "next"){
+                //下一张   //把一张 放到最到一张
+                //json.push(json.shift());
+                cheg(true)
+
+            }
+            else{
+                //上一张  //把最到一张 放到第一张
+                //json.unshift(json.pop());
+                cheg(false)
+            }
+        }
+    }
+
+	function cur(){
+		for(var i=0;i<aLi.length;i++){
+			btn.children[i].className="";
+			
+		}
+		
+	}
+	
+	
+    function cheg(off){
+
+        if (off){
+            json.push(json.shift());
+        }
+        else{
+            json.unshift(json.pop());
+        }
+		
+        for(var i=0; i<aLi.length;i++){
+            animate(aLi[i],{
+                width:json[i].width,
+                height:json[i].height,
+                opacity:json[i].opacity,
+                top:json[i].top,
+                left:json[i].left,
+                zIndex:json[i].z
+            })
+        }
+    }
+</script>
